@@ -23,6 +23,7 @@ import static com.android.server.wifi.WifiStateMachine.WIFI_WORK_SOURCE;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
@@ -904,14 +905,14 @@ public class WifiConnectivityManager {
             return;
         }
 
-        // Any scans will impact wifi performance including WFD performance,
+        // Any scans will impact Wifi performance including WFD performance,
         // So at least ignore scans triggered internally by ConnectivityManager
         // when WFD session is active. We still allow connectivity scans initiated
         // by other work source.
         if (WIFI_WORK_SOURCE.equals(workSource) &&
-            (mMiracastMode == WifiP2pManager.MIRACAST_SOURCE ||
-            mMiracastMode == WifiP2pManager.MIRACAST_SINK)) {
-            Log.d(TAG,"ignore connectivity scan, MiracastMode:" + mMiracastMode);
+                (mMiracastMode == WifiP2pManager.MIRACAST_SOURCE ||
+                mMiracastMode == WifiP2pManager.MIRACAST_SINK)) {
+            localLog("Ignore connectivity scan, MiracastMode:" + mMiracastMode);
             return;
         }
 
@@ -1116,7 +1117,7 @@ public class WifiConnectivityManager {
      * connectivity scan during the time when miracast is enabled.
      */
     public void saveMiracastMode(int mode) {
-        Log.d(TAG,"saveMiracastMode: mode=" + mode);
+        localLog("saveMiracastMode: mode=" + mode);
         mMiracastMode = mode;
     }
 
